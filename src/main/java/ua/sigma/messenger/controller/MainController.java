@@ -1,7 +1,5 @@
 package ua.sigma.messenger.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,9 +11,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class MainController {
-
-    private static final Logger logger = LoggerFactory.getLogger(MainController.class);
-
     @RequestMapping(value = {"/", "/welcome**"}, method = RequestMethod.GET)
     public ModelAndView defaultPage() {
         ModelAndView model = new ModelAndView();
@@ -40,8 +35,12 @@ public class MainController {
         if (logout != null) {
             model.addObject("msg", "You've been logged out successfully.");
         }
-        model.setViewName("login");
-        logger.debug("get login view");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth instanceof AnonymousAuthenticationToken) {
+            model.setViewName("login");
+        } else {
+            model.setViewName("welcome");
+        }
         return model;
     }
 
