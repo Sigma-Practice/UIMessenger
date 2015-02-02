@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+
+    <context:spring-configured/>
+
+    <context:component-scan base-package="ua.sigma.messenger">
+        <context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
+    </context:component-scan>
+    <!-- The Aspect itself. -->
+    <bean id="exampleLoggingAspect"
+          class="ua.sigma.messenger.util.LoggingAspect" />
+
+    <aop:aspectj-autoproxy />
+
+    <aop:config>
+
+        <!-- The Pointcut(s). -->
+        <aop:pointcut id="loggingPointcut"
+                      expression="execution(* ua.sigma.messenger..dao..*(..))" />
+
+        <!-- The Advice(s). -->
+        <aop:aspect id="loggingAspect" ref="exampleLoggingAspect">
+            <aop:before pointcut-ref="loggingPointcut" method="doBefore" />
+            <aop:after pointcut-ref="loggingPointcut" method="doAfter" />
+            <aop:after-returning pointcut-ref="loggingPointcut"
+                                 method="doAfterReturning" returning="result" />
+            <aop:after-throwing method="doAfterThrowing" pointcut-ref="loggingPointcut" throwing="error"/>
+        </aop:aspect>
+
+    </aop:config>
+
+    <!-- ************ JPA configuration *********** -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="messengerPersistence"/>
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan" value="ua.sigma.messenger.*"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="showSql" value="false"/>
+                <property name="databasePlatform" value="org.hibernate.dialect.H2Dialect"/>
+            </bean>
+        </property>
+    </bean>
+    <bean id="userDao" class="ua.sigma.messenger.dao.impl.UserDaoImpl"/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.h2.Driver"/>
+        <property name="url" value="jdbc:h2:tcp://localhost/~/db/MessengerDB"/>
+        <property name="username" value="admin"/>
+        <property name="password" value="admin"/>
+    </bean>
+</beans>

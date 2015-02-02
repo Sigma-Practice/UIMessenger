@@ -1,0 +1,45 @@
+# Eclipse 
+*.pydevproject
+.metadata
+.gradle
+Deployment/
+*.war
+*.jsp~
+*.xml~
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*.txt~
+*~.nib
+local.properties
+.settings/
+.loadpath
+.classpath
+.project
+
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Maven
+log/
+target/
+build/
+
+# Exclude tomcat
+tomcat.8080/

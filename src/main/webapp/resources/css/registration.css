@@ -1,0 +1,44 @@
+h1 {
+	text-align: center;
+	margin-top: 0;
+}
+
+body {
+	background-image: url(05.jpg);
+	background-size: cover;
+}
+
+div.content {
+	width: 30%;
+	margin-left: auto;
+	margin-right: auto;
+	border: 2px solid;
+	border-radius: 10px;
+	border-color: rgb(0, 206, 209);
+	background-color: rgba(255, 255, 255, 0.3);
+	padding: 20px;
+	margin-top: 5%;
+}
+
+div.left {
+	float: left;
+}
+
+div.right {
+	float: right;
+	width: 70%;
+}
+
+textarea {
+	resize: none;
+}
+
+div.languageselect{
+	position: absolute;
+}
+
+.langbutton{
+	font-size: 8px; 
+	float: right; 
+	margin: 1;
+}
