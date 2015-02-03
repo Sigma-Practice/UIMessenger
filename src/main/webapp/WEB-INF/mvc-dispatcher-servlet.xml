@@ -27,7 +27,7 @@
 
     <bean id="messageSource"
           class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
-        <property name="basename" value="label"/>
+        <property name="basename" value="classpath:label"/>
         <property name="defaultEncoding" value="UTF-8"/>
     </bean>
 
@@ -40,4 +40,10 @@
           class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
         <property name="defaultLocale" value="en"/>
     </bean>
+
+    <mvc:interceptors>
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="lang" />
+        </bean>
+    </mvc:interceptors>
 </beans>

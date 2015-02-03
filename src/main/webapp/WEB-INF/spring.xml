@@ -51,6 +51,8 @@
         </property>
     </bean>
     <bean id="userDao" class="ua.sigma.messenger.dao.impl.UserDaoImpl"/>
+    <bean id="roleDao" class="ua.sigma.messenger.dao.impl.RoleDaoImpl"/>
+    <bean id="verificationTokenDao" class="ua.sigma.messenger.dao.impl.VerificationTokenDaoImpl"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.h2.Driver"/>

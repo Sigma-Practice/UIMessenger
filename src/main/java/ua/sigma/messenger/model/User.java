@@ -45,6 +45,42 @@ public class User {
         return isMute;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public void setActivated(boolean isActivated) {
+        this.isActivated = isActivated;
+    }
+
+    public void setMute(boolean isMute) {
+        this.isMute = isMute;
+    }
+
     @GeneratedValue(strategy = IDENTITY)
     @Id int id;
     String login;

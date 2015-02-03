@@ -15,6 +15,7 @@ http://www.springframework.org/schema/security/spring-security-3.2.xsd">
             <cache-control/>
         </headers>
 
+        <intercept-url pattern="/registration" access="isAnonymous()"/>
         <intercept-url pattern="/admin*" access="hasRole('ROLE_ADMIN')"/>
         <intercept-url pattern="/welcome*" access="hasAnyRole('ROLE_USER', 'ROLE_ADMIN')"/>
         <form-login login-page="/login"
