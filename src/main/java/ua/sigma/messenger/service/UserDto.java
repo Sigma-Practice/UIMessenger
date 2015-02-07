@@ -37,6 +37,9 @@ public class UserDto {
     private String phone;
     private String info;
 
+    public UserDto() {
+    }
+
     public String getLogin() {
         return login;
     }
