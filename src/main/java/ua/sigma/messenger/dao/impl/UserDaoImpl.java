@@ -5,10 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ua.sigma.messenger.dao.UserDao;
 import ua.sigma.messenger.model.User;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -30,9 +27,19 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findByEmail(String email) {
-        Query q = entityManager.createQuery("SELECT x FROM User x WHERE x.login = :emailParam");
-        User user = (User) q.setParameter("emailParam", email).getSingleResult();
-        return user;
+        try {
+            Query q = entityManager.createQuery("SELECT x FROM User x WHERE x.login = :emailParam");
+            User user = (User) q.setParameter("emailParam", email).getSingleResult();
+            return user;
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
+
+    @Override
+    public User findOne(int id) {
+        //TODO
+        return null;
     }
 
     @Override
@@ -53,7 +60,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> findAll() {
-        TypedQuery<User> query= entityManager.createQuery("SELECT x FROM User x", User.class);
+        TypedQuery<User> query = entityManager.createQuery("SELECT x FROM User x", User.class);
         List<User> users = query.getResultList();
         return users;
     }

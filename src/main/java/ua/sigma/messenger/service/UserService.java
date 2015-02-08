@@ -4,13 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.sigma.messenger.dao.UserDao;
+import ua.sigma.messenger.dao.impl.PasswordResetTokenDaoImpl;
 import ua.sigma.messenger.dao.impl.RoleDaoImpl;
 import ua.sigma.messenger.dao.impl.UserDaoImpl;
 import ua.sigma.messenger.dao.impl.VerificationTokenDaoImpl;
+import ua.sigma.messenger.model.PasswordResetToken;
 import ua.sigma.messenger.model.Role;
 import ua.sigma.messenger.model.User;
 import ua.sigma.messenger.model.VerificationToken;
 import ua.sigma.messenger.validation.EmailExistsException;
+
+import java.util.UUID;
 
 /**
  * Created by Maks on 02.02.2015.
@@ -20,9 +25,12 @@ import ua.sigma.messenger.validation.EmailExistsException;
 @Transactional
 public class UserService implements IUserService {
     private final static String ROLE_USER = "ROLE_USER";
-    UserDaoImpl userDao;
+    @Autowired
+    UserDao userDao;
 
     private VerificationTokenDaoImpl tokenDao;
+
+    private PasswordResetTokenDaoImpl passwordResetTokenDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -49,27 +57,62 @@ public class UserService implements IUserService {
 
     @Override
     public User getUser(String verificationToken) {
-        return null;
+        User user = tokenDao.findByToken(verificationToken).getUser();
+        return user;
     }
 
     @Override
     public void saveRegisteredUser(User user) {
-
+        userDao.create(user);
     }
 
     @Override
     public void deleteUser(User user) {
-
+        userDao.delete(user);
     }
 
     @Override
     public void createVerificationTokenForUser(User user, String token) {
-
+        VerificationToken vToken = new VerificationToken(token, user);
+        tokenDao.create(vToken);
     }
 
     @Override
-    public VerificationToken getVerificationToken(String VerificationToken) {
-        return null;
+    public VerificationToken getVerificationToken(String verificationToken) {
+        return tokenDao.findByToken(verificationToken);
+    }
+
+    public VerificationToken updateVerificationToken(String verificationToken) {
+        VerificationToken vToken = tokenDao.findByToken(verificationToken);
+        vToken.updateToken(UUID.randomUUID().toString());
+        tokenDao.update(vToken);
+        return vToken;
+    }
+
+    public void createPasswordResetTokenForUser(User user, String token) {
+        PasswordResetToken pToken = new PasswordResetToken(token, user);
+        passwordResetTokenDao.create(pToken);
+    }
+
+    public User findUserByEmail(String email) {
+        return userDao.findByEmail(email);
+    }
+
+    public PasswordResetToken getPasswordResetToken(String token) {
+        return passwordResetTokenDao.findByToken(token);
+    }
+
+    public User getUserByPasswordResetToken(String token) {
+        return passwordResetTokenDao.findByToken(token).getUser();
+    }
+
+    public User getUserByID(int id) {
+        return userDao.findOne(id);
+    }
+
+    public void changeUserPassword(User user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        userDao.update(user);
     }
 
     private boolean emailExist(String email) {

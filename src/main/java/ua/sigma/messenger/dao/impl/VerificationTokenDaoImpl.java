@@ -22,11 +22,13 @@ public class VerificationTokenDaoImpl implements VerificationTokenDao {
 
     @Override
     public VerificationToken findByToken(String token) {
+        //TODO
         return null;
     }
 
     @Override
     public VerificationToken findByUser(User user) {
+        //TODO
         return null;
     }
 

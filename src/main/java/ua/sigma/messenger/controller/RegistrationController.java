@@ -58,7 +58,6 @@ public class RegistrationController {
         if (result.hasErrors()) {
             return new ModelAndView("registration", "user", accountDto);
         }
-
         User registered = createUserAccount(accountDto);
         if (registered == null) {
             result.rejectValue("email", "message.regError");

@@ -11,5 +11,5 @@ public interface UserDao extends GenerycCRUD<User> {
     User findByLogin(String login);
     User findByEmail(String email);
     List<User> findAll();
-
+    User findOne(int id);
 }
