@@ -1,5 +1,6 @@
 package ua.sigma.messenger.service;
 
+import ua.sigma.messenger.model.PasswordResetToken;
 import ua.sigma.messenger.model.User;
 import ua.sigma.messenger.model.VerificationToken;
 import ua.sigma.messenger.validation.EmailExistsException;
@@ -21,4 +22,18 @@ public interface IUserService {
     void createVerificationTokenForUser(User user, String token);
 
     VerificationToken getVerificationToken(String VerificationToken);
+
+    VerificationToken updateVerificationToken(String token);
+
+    void createPasswordResetTokenForUser(User user, String token);
+
+    User findUserByEmail(String email);
+
+    PasswordResetToken getPasswordResetToken(String token);
+
+    User getUserByPasswordResetToken(String token);
+
+    User getUserByID(int id);
+
+    void changeUserPassword(User user, String password);
 }

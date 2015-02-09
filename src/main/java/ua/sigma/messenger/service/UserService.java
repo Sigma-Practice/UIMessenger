@@ -70,7 +70,7 @@ public class UserService implements IUserService {
 
     @Override
     public void saveRegisteredUser(User user) {
-        userDao.create(user);
+        userDao.update(user);
     }
 
     @Override
@@ -89,6 +89,7 @@ public class UserService implements IUserService {
         return tokenDao.findByToken(verificationToken);
     }
 
+    @Override
     public VerificationToken updateVerificationToken(String verificationToken) {
         VerificationToken vToken = tokenDao.findByToken(verificationToken);
         vToken.updateToken(UUID.randomUUID().toString());
@@ -96,27 +97,33 @@ public class UserService implements IUserService {
         return vToken;
     }
 
+    @Override
     public void createPasswordResetTokenForUser(User user, String token) {
         PasswordResetToken pToken = new PasswordResetToken(token, user);
         passwordResetTokenDao.create(pToken);
     }
 
+    @Override
     public User findUserByEmail(String email) {
         return userDao.findByEmail(email);
     }
 
+    @Override
     public PasswordResetToken getPasswordResetToken(String token) {
         return passwordResetTokenDao.findByToken(token);
     }
 
+    @Override
     public User getUserByPasswordResetToken(String token) {
         return passwordResetTokenDao.findByToken(token).getUser();
     }
 
+    @Override
     public User getUserByID(int id) {
         return userDao.findOne(id);
     }
 
+    @Override
     public void changeUserPassword(User user, String password) {
         user.setPassword(passwordEncoder.encode(password));
         userDao.update(user);

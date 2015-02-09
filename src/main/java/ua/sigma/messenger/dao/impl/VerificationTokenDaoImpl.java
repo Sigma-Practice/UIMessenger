@@ -6,9 +6,7 @@ import ua.sigma.messenger.dao.VerificationTokenDao;
 import ua.sigma.messenger.model.User;
 import ua.sigma.messenger.model.VerificationToken;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -23,8 +21,13 @@ public class VerificationTokenDaoImpl implements VerificationTokenDao {
 
     @Override
     public VerificationToken findByToken(String token) {
-        //TODO
-        return null;
+        try {
+            Query q = entityManager.createQuery("SELECT x FROM VerificationToken  x WHERE x.token = :tokenParam");
+            VerificationToken verificationToken = (VerificationToken) q.setParameter("tokenParam", token).getSingleResult();
+            return verificationToken;
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 
     @Override
@@ -51,7 +54,7 @@ public class VerificationTokenDaoImpl implements VerificationTokenDao {
 
     @Override
     public List<VerificationToken> findAll() {
-        TypedQuery<VerificationToken> query= entityManager.createQuery("SELECT x FROM VerificationToken x", VerificationToken.class);
+        TypedQuery<VerificationToken> query = entityManager.createQuery("SELECT x FROM VerificationToken x", VerificationToken.class);
         List<VerificationToken> verificationTokens = query.getResultList();
         return verificationTokens;
     }
