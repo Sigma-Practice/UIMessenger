@@ -9,6 +9,7 @@ import static javax.persistence.AccessType.FIELD;
  */
 @Entity
 @Access(FIELD)
+@Table(name = "user_role")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,6 +20,10 @@ public class Role {
     public Role(String login, String role) {
         this.login = login;
         this.role = role;
+    }
+
+    public Role() {
+        super();
     }
 
     public int getId() {

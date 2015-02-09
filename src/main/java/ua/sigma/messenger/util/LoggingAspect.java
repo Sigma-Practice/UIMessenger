@@ -23,7 +23,11 @@ public class LoggingAspect {
 
     public void doAfterReturning(JoinPoint joinPoint, Object result) {
         System.out.println("***AspectJ*** DoAfterReturning() is running!! intercepted : " + joinPoint.getSignature().getName());
-        System.out.println("Method returned value is : " + result.toString());
+        if(result!=null) {
+            System.out.println("Method returned value is : " + result.toString());
+        }else {
+            System.out.println("Method ruturned null result.");
+        }
     }
 
     @AfterThrowing(pointcut = "execution(* ua.sigma.messenger..dao..*(..))",

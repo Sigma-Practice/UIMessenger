@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.sigma.messenger.dao.RoleDao;
 import ua.sigma.messenger.dao.UserDao;
 import ua.sigma.messenger.dao.impl.PasswordResetTokenDaoImpl;
 import ua.sigma.messenger.dao.impl.RoleDaoImpl;
@@ -35,7 +36,8 @@ public class UserService implements IUserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private RoleDaoImpl roleDao;
+    @Autowired
+    private RoleDao roleDao;
 
     @Override
     public User registerNewUserAccount(UserDto accountDto) throws EmailExistsException {

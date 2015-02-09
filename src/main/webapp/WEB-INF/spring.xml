@@ -4,7 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
-       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
 
     <context:spring-configured/>
 
@@ -13,22 +13,22 @@
     </context:component-scan>
     <!-- The Aspect itself. -->
     <bean id="exampleLoggingAspect"
-          class="ua.sigma.messenger.util.LoggingAspect" />
+          class="ua.sigma.messenger.util.LoggingAspect"/>
 
-    <aop:aspectj-autoproxy />
+    <aop:aspectj-autoproxy/>
 
     <aop:config>
 
         <!-- The Pointcut(s). -->
         <aop:pointcut id="loggingPointcut"
-                      expression="execution(* ua.sigma.messenger..dao..*(..))" />
+                      expression="execution(* ua.sigma.messenger..dao..*(..))"/>
 
         <!-- The Advice(s). -->
         <aop:aspect id="loggingAspect" ref="exampleLoggingAspect">
-            <aop:before pointcut-ref="loggingPointcut" method="doBefore" />
-            <aop:after pointcut-ref="loggingPointcut" method="doAfter" />
+            <aop:before pointcut-ref="loggingPointcut" method="doBefore"/>
+            <aop:after pointcut-ref="loggingPointcut" method="doAfter"/>
             <aop:after-returning pointcut-ref="loggingPointcut"
-                                 method="doAfterReturning" returning="result" />
+                                 method="doAfterReturning" returning="result"/>
             <aop:after-throwing method="doAfterThrowing" pointcut-ref="loggingPointcut" throwing="error"/>
         </aop:aspect>
 
@@ -56,8 +56,26 @@
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="org.h2.Driver"/>
-        <property name="url" value="jdbc:h2:tcp://localhost/~/db/MessengerDB"/>
+        <property name="url" value="jdbc:h2:tcp://localhost/~/MessengerDB"/>
         <property name="username" value="admin"/>
         <property name="password" value="admin"/>
+    </bean>
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.gmail.com"/>
+        <property name="port" value="465"/>
+        <property name="protocol" value="smtps"/>
+        <property name="username" value="messengerconfirm@gmail.com"/>
+        <property name="password" value="messengerconfirmpassword"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">false</prop>
+                <prop key="mail.smtp.quitwait">false</prop>
+                <prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+                <prop key="mail.smtp.socketFactory.fallback">false</prop>
+                <prop key="mail.debug">true</prop>
+            </props>
+        </property>
     </bean>
 </beans>
