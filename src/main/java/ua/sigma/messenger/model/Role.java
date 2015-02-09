@@ -9,7 +9,7 @@ import static javax.persistence.AccessType.FIELD;
  */
 @Entity
 @Access(FIELD)
-@Table(name = "user_role")
+@Table(name = "userrole")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

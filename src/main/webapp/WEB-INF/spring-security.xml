@@ -35,7 +35,7 @@ http://www.springframework.org/schema/security/spring-security-3.2.xsd">
             <password-encoder ref="bCryptPasswordEncoder"/>
             <jdbc-user-service data-source-ref="dataSource"
                                users-by-username-query="select login, password, enabled from user where login=?"
-                               authorities-by-username-query="select login, role from USER_ROLE where login =?"/>
+                               authorities-by-username-query="select login, role from userrole where login =?"/>
         </authentication-provider>
     </authentication-manager>
 

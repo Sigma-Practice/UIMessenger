@@ -4,17 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.sigma.messenger.dao.PasswordResetTokenDao;
 import ua.sigma.messenger.dao.RoleDao;
 import ua.sigma.messenger.dao.UserDao;
+import ua.sigma.messenger.dao.VerificationTokenDao;
 import ua.sigma.messenger.dao.impl.PasswordResetTokenDaoImpl;
-import ua.sigma.messenger.dao.impl.RoleDaoImpl;
-import ua.sigma.messenger.dao.impl.UserDaoImpl;
 import ua.sigma.messenger.dao.impl.VerificationTokenDaoImpl;
 import ua.sigma.messenger.model.PasswordResetToken;
 import ua.sigma.messenger.model.Role;
 import ua.sigma.messenger.model.User;
 import ua.sigma.messenger.model.VerificationToken;
 import ua.sigma.messenger.validation.EmailExistsException;
+import ua.sigma.messenger.validation.LoginExistsException;
 
 import java.util.UUID;
 
@@ -29,9 +30,11 @@ public class UserService implements IUserService {
     @Autowired
     UserDao userDao;
 
-    private VerificationTokenDaoImpl tokenDao;
+    @Autowired
+    private VerificationTokenDao tokenDao;
 
-    private PasswordResetTokenDaoImpl passwordResetTokenDao;
+    @Autowired
+    private PasswordResetTokenDao passwordResetTokenDao;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -40,9 +43,11 @@ public class UserService implements IUserService {
     private RoleDao roleDao;
 
     @Override
-    public User registerNewUserAccount(UserDto accountDto) throws EmailExistsException {
+    public User registerNewUserAccount(UserDto accountDto) throws EmailExistsException, LoginExistsException {
         if (emailExist(accountDto.getEmail())) {
             throw new EmailExistsException("There is an account with that email adress: " + accountDto.getEmail());
+        } else if (loginExist(accountDto.getEmail())) {
+            throw new LoginExistsException("There is an account with that login" + accountDto.getLogin());
         }
         final User user = new User();
 
@@ -119,6 +124,14 @@ public class UserService implements IUserService {
 
     private boolean emailExist(String email) {
         User user = userDao.findByEmail(email);
+        if (user != null) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean loginExist(String login) {
+        User user = userDao.findByLogin(login);
         if (user != null) {
             return true;
         }

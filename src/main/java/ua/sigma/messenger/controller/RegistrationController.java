@@ -18,6 +18,7 @@ import ua.sigma.messenger.model.User;
 import ua.sigma.messenger.service.IUserService;
 import ua.sigma.messenger.service.UserDto;
 import ua.sigma.messenger.validation.EmailExistsException;
+import ua.sigma.messenger.validation.LoginExistsException;
 
 import javax.validation.Valid;
 
@@ -43,6 +44,7 @@ public class RegistrationController {
     public RegistrationController() {
 
     }
+
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public ModelAndView showRegForm() {
         ModelAndView model = new ModelAndView();
@@ -61,12 +63,14 @@ public class RegistrationController {
         User registered = createUserAccount(accountDto);
         if (registered == null) {
             result.rejectValue("email", "message.regError");
-        }
-        try {
-            String appUrl = request.getContextPath();
-            eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), appUrl));
-        } catch (Exception me) {
-            return new ModelAndView("emailError", "user", accountDto);
+        } else {
+            try {
+                String appUrl = request.getContextPath();
+                eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), appUrl));
+            } catch (Exception me) {
+                me.printStackTrace();
+                return new ModelAndView("emailError", "user", accountDto);
+            }
         }
         return new ModelAndView("successRegister", "user", accountDto);
     }
@@ -76,6 +80,8 @@ public class RegistrationController {
         try {
             registered = service.registerNewUserAccount(accountDto);
         } catch (EmailExistsException e) {
+            return null;
+        } catch (LoginExistsException e) {
             return null;
         }
         return registered;

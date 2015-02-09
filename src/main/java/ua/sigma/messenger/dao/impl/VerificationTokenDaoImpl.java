@@ -17,6 +17,7 @@ import java.util.List;
 @Repository
 @Transactional
 public class VerificationTokenDaoImpl implements VerificationTokenDao {
+
     @PersistenceContext(unitName = "messengerPersistence")
     private EntityManager entityManager;
 

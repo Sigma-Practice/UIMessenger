@@ -17,6 +17,8 @@ import java.util.UUID;
  */
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
+    public static final String MESSAGE = "Confirm you registration: ";
+
     @Autowired
     private IUserService service;
 
@@ -39,11 +41,10 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         String recipientAddress = user.getEmail();
         String subject = "Registration Confirmation";
         String confirmationUrl = event.getAppUrl() + "/regitrationConfirm?token=" + token;
-        String message = messages.getMessage("message.regSucc", null, event.getLocale());
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);
-        email.setText(message + " \r\n" + "http://localhost:8080" + confirmationUrl);
+        email.setText(MESSAGE + " \r\n" + "http://localhost:8080" + confirmationUrl);
         System.out.println(email.getText());
         mailSender.send(email);
     }

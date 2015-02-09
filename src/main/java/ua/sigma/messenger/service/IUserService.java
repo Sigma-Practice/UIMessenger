@@ -3,13 +3,14 @@ package ua.sigma.messenger.service;
 import ua.sigma.messenger.model.User;
 import ua.sigma.messenger.model.VerificationToken;
 import ua.sigma.messenger.validation.EmailExistsException;
+import ua.sigma.messenger.validation.LoginExistsException;
 
 /**
  * Created by Maks on 02.02.2015.
  */
 public interface IUserService {
 
-    User registerNewUserAccount(UserDto accountDto) throws EmailExistsException;
+    User registerNewUserAccount(UserDto accountDto) throws EmailExistsException, LoginExistsException;
 
     User getUser(String verificationToken);
 

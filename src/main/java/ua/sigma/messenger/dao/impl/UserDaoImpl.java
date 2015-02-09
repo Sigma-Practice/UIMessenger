@@ -20,15 +20,19 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findByLogin(String login) {
-        Query q = entityManager.createQuery("SELECT x FROM User x WHERE x.login = :loginParam");
-        User user = (User) q.setParameter("loginParam", login).getSingleResult();
-        return user;
+        try {
+            Query q = entityManager.createQuery("SELECT x FROM User x WHERE x.login = :loginParam");
+            User user = (User) q.setParameter("loginParam", login).getSingleResult();
+            return user;
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 
     @Override
     public User findByEmail(String email) {
         try {
-            Query q = entityManager.createQuery("SELECT x FROM User x WHERE x.login = :emailParam");
+            Query q = entityManager.createQuery("SELECT x FROM User x WHERE x.email = :emailParam");
             User user = (User) q.setParameter("emailParam", email).getSingleResult();
             return user;
         } catch (NoResultException ex) {
