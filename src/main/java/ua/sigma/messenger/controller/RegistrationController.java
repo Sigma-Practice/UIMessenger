@@ -78,7 +78,7 @@ public class RegistrationController {
         return new ModelAndView("successRegister", "user", accountDto);
     }
 
-    @RequestMapping(value = "/regitrationConfirm", method = RequestMethod.GET)
+    @RequestMapping(value = "/registrationConfirm", method = RequestMethod.GET)
     public ModelAndView confirmRegistration(@RequestParam("token") String token) {
         ModelAndView model = new ModelAndView();
         VerificationToken verificationToken = service.getVerificationToken(token);
@@ -111,7 +111,7 @@ public class RegistrationController {
         VerificationToken newToken = service.updateVerificationToken(token);
         User user = service.getUser(newToken.getToken());
         try {
-            String confirmationUrl = request.getContextPath() + "/regitrationConfirm.html?token=" + newToken.getToken();
+            String confirmationUrl = request.getContextPath() + "/registrationConfirm.html?token=" + newToken.getToken();
             SimpleMailMessage email = new SimpleMailMessage();
             email.setTo(user.getEmail());
             email.setSubject("Resend Registration Token");
@@ -124,6 +124,7 @@ public class RegistrationController {
         }
         return new ModelAndView("login");
     }
+
 
 
     private User createUserAccount(UserDto accountDto) {

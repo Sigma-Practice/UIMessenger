@@ -93,7 +93,7 @@ public class UserService implements IUserService {
     public VerificationToken updateVerificationToken(String verificationToken) {
         VerificationToken vToken = tokenDao.findByToken(verificationToken);
         vToken.updateToken(UUID.randomUUID().toString());
-        tokenDao.update(vToken);
+        tokenDao.create(vToken);
         return vToken;
     }
 

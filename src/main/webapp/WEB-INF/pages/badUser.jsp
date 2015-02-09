@@ -10,15 +10,14 @@
 </head>
 <body>
 <h1>
-    <div class="alert alert-error">
-        ${param.message}
+
 </h1>
 <br>
 <a href="<c:url value="/registration" />"><spring:message code="label.registration"/></a>
 
-<c:if test="${param.expired}">
+<c:if test="${expired}">
     <a href="<c:url value="/resendRegistrationToken">
-			<c:param name="token" value="${param.token}"/>
+			<c:param name="token" value="${token}"/>
 		 </c:url>">
         <spring:message code="label.resendRegToken"/>
     </a>

@@ -24,7 +24,7 @@
                 <h1>Online chat</h1>
 
                 <div class="form-group">
-                    <input name="username" type="text" class="form-control" placeholder="Email"
+                    <input name="username" type="text" class="form-control" placeholder="Login"
                            required autofocus/>
                 </div>
                 <div class="form-group">
@@ -40,7 +40,7 @@
             <a href="">Forgot your password?</a>
 
             <div>
-                <a href="" class="btn btn-primary btn-block">Create New Account</a>
+                <a href="<c:url value="/registration"/>" class="btn btn-primary btn-block">Create New Account</a>
             </div>
         </div>
     </div>
