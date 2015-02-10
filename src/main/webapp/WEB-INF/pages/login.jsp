@@ -37,7 +37,7 @@
                 <input type="hidden" name="${_csrf.parameterName}"
                        value="${_csrf.token}"/>
             </form>
-            <a href="">Forgot your password?</a>
+            <a href="<c:url value="/forgotPassword" />">Forgot your password?</a>
 
             <div>
                 <a href="<c:url value="/registration"/>" class="btn btn-primary btn-block">Create New Account</a>

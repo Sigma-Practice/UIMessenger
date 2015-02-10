@@ -7,7 +7,9 @@ import ua.sigma.messenger.model.PasswordResetToken;
 import ua.sigma.messenger.model.User;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  * Created by Maks on 08.02.2015.
@@ -20,8 +22,13 @@ public class PasswordResetTokenDaoImpl implements PasswordResetTokenDao {
 
     @Override
     public PasswordResetToken findByToken(String token) {
-        //TODO
-        return null;
+        try {
+            Query q = entityManager.createQuery("SELECT x FROM PasswordResetToken  x WHERE x.token = :tokenParam");
+            PasswordResetToken passwordResetToken = (PasswordResetToken) q.setParameter("tokenParam", token).getSingleResult();
+            return passwordResetToken;
+        } catch (NoResultException ex) {
+            return null;
+        }
     }
 
     @Override

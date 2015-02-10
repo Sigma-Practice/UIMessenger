@@ -11,8 +11,13 @@ import static javax.persistence.GenerationType.IDENTITY;
 /**
  * Created by vlad on 23.01.15.
  */
-@Entity @Access(FIELD)
+@Entity
+@Access(FIELD)
 public class User {
+    public int getId() {
+        return id;
+    }
+
     public String getLogin() {
         return login;
     }
@@ -82,7 +87,8 @@ public class User {
     }
 
     @GeneratedValue(strategy = IDENTITY)
-    @Id int id;
+    @Id
+    int id;
     String login;
     String email;
     String password;
