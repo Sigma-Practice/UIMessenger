@@ -8,3 +8,27 @@ INSERT INTO user_role (login, role)
 VALUES ('Admin', 'ROLE_ADMIN');
 INSERT INTO user_role (login, role)
 VALUES ('Admin', 'ROLE_USER');
+INSERT INTO topic(id,name)
+  VALUES(DEFAULT, 'Cars');
+INSERT INTO topic(id,name)
+  VALUES(DEFAULT, 'Games');
+INSERT INTO topic(id,name)
+  VALUES(DEFAULT, 'Coding');
+INSERT INTO topic(id,name)
+  VALUES(DEFAULT, 'Other');
+INSERT INTO chat(id, topicId, name)
+  VALUES(DEFAULT, 1, 'Audi');
+INSERT INTO chat(id, topicId, name)
+  VALUES(DEFAULT, 1, 'BMW');
+INSERT INTO chat(id, topicId, name)
+  VALUES(DEFAULT, 1, 'VAZ');
+INSERT INTO chat(id, topicId, name)
+  VALUES(DEFAULT, 1, 'Bentley');
+INSERT INTO chat(id, topicId, name)
+  VALUES(DEFAULT, 2, 'Far cry 4');
+INSERT INTO chat(id, topicId, name)
+  VALUES(DEFAULT, 2, 'Crysis 3');
+INSERT INTO chat(id, topicId, name)
+  VALUES(DEFAULT, 3, 'Java the best');
+INSERT INTO chat(id, topicId, name)
+  VALUES(DEFAULT, 4, 'Chat about something');

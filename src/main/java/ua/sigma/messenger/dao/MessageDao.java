@@ -13,4 +13,5 @@ public interface MessageDao extends GenerycCRUD<Message> {
 
     List<Message> findNewMessage(Chat chat, Date from);
 
+    List<Message> findByChatId(int id);
 }

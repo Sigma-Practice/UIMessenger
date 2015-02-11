@@ -8,6 +8,7 @@ import ua.sigma.messenger.model.Message;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +40,14 @@ public class MessageDaoImpl implements MessageDao {
 
     @Override
     public List<Message> findNewMessage(Chat chat, Date from) {
-        List<Message> messages = chat.getMessages();
+        return null;
+    }
+
+    @Override
+    public List<Message> findByChatId(int id) {
+        TypedQuery<Message> query = entityManager.createQuery("SELECT x FROM Message x WHERE x.chatId= :idParam", Message.class);
+        query.setParameter("idParam", id);
+        List<Message> messages = query.getResultList();
         return messages;
     }
 }

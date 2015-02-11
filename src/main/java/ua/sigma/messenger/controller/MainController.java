@@ -1,5 +1,6 @@
 package ua.sigma.messenger.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,17 +10,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import ua.sigma.messenger.dao.ChatDao;
+import ua.sigma.messenger.dao.MessageDao;
+import ua.sigma.messenger.dao.TopicDao;
+import ua.sigma.messenger.model.Chat;
+import ua.sigma.messenger.model.Message;
+import ua.sigma.messenger.model.Topic;
+
+import java.util.List;
 
 @Controller
 public class MainController {
+    @Autowired
+    TopicDao topicDao;
+
+    @Autowired
+    ChatDao chatDao;
+
+    @Autowired
+    MessageDao messageDao;
+
     @RequestMapping(value = {"/", "/welcome**"}, method = RequestMethod.GET)
-    public ModelAndView defaultPage() {
+    public ModelAndView defaultPage(@RequestParam(value = "chat", required = false) String chatId) {
         ModelAndView model = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth instanceof AnonymousAuthenticationToken) {
             model.setViewName("login");
         } else {
-            model.setViewName("welcome");
+            putTopicsChatsMessages(model, chatId);
+            model.setViewName("mainpage");
         }
         return model;
     }
@@ -62,5 +81,16 @@ public class MainController {
         model.setViewName("403");
         return model;
 
+    }
+
+    private void putTopicsChatsMessages(ModelAndView model, String chatId) {
+        List<Topic> topics = topicDao.findAll();
+        model.addObject("topics", topics);
+        List<Chat> chats = chatDao.findAll();
+        model.addObject("chats", chats);
+        if (chatId != null && !chatId.equals("")) {
+            List<Message> messages = messageDao.findByChatId(Integer.parseInt(chatId));
+            model.addObject("messages", messages);
+        }
     }
 }

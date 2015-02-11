@@ -1,11 +1,12 @@
 package ua.sigma.messenger.model;
 
-import javax.persistence.*;
+import javax.persistence.Access;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.Date;
 
 import static javax.persistence.AccessType.FIELD;
-import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 /**
@@ -15,19 +16,18 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Access(FIELD)
 public class Message {
     @GeneratedValue(strategy = IDENTITY)
-    @Id int id;
+    @Id
+    int id;
     String text;
     Date sent;
-    @ManyToOne(fetch = LAZY, optional = false)
-    Chat chat;
-    @ManyToOne(fetch = EAGER)
-    User user;
+    int chatId;
+    int userId;
 
-    public Message(String text, Date sent, Chat chat, User user) {
+    public Message(String text, Date sent, int chatId, int userId) {
         this.text = text;
         this.sent = sent;
-        this.chat = chat;
-        this.user = user;
+        this.chatId = chatId;
+        this.userId = userId;
     }
 
     public Message() {
@@ -45,11 +45,11 @@ public class Message {
         return sent;
     }
 
-    public Chat getChat() {
-        return chat;
+    public int getChatId() {
+        return chatId;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 }
