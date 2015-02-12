@@ -77,6 +77,7 @@ public class RegistrationController {
         User registered = createUserAccount(accountDto);
         if (registered == null) {
             result.rejectValue("email", "message.regError");
+            return new ModelAndView("registration", "user", accountDto);
         } else {
             try {
                 String appUrl = request.getContextPath();

@@ -8,8 +8,6 @@ import ua.sigma.messenger.dao.PasswordResetTokenDao;
 import ua.sigma.messenger.dao.RoleDao;
 import ua.sigma.messenger.dao.UserDao;
 import ua.sigma.messenger.dao.VerificationTokenDao;
-import ua.sigma.messenger.dao.impl.PasswordResetTokenDaoImpl;
-import ua.sigma.messenger.dao.impl.VerificationTokenDaoImpl;
 import ua.sigma.messenger.model.PasswordResetToken;
 import ua.sigma.messenger.model.Role;
 import ua.sigma.messenger.model.User;
@@ -46,7 +44,7 @@ public class UserService implements IUserService {
     public User registerNewUserAccount(UserDto accountDto) throws EmailExistsException, LoginExistsException {
         if (emailExist(accountDto.getEmail())) {
             throw new EmailExistsException("There is an account with that email adress: " + accountDto.getEmail());
-        } else if (loginExist(accountDto.getEmail())) {
+        } else if (loginExist(accountDto.getLogin())) {
             throw new LoginExistsException("There is an account with that login" + accountDto.getLogin());
         }
         final User user = new User();
